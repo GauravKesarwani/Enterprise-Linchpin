@@ -31,7 +31,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.net.URL;
 
 public class MainActivity extends ActionBarActivity {
-    private static String urlString = "http://192.168.1.12:8000/linchpin/?emp_id=1";
+    private static String urlString = "http://192.168.1.11:8000/linchpin/?emp_id=1";
     public final static String EXTRA_MESSAGE = "com.example.MESSAGE";
 
     @Override

@@ -1,13 +1,18 @@
 package com.example.cmpe295b;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +37,7 @@ public class Profile extends ActionBarActivity {
         Intent intent = getIntent();
 
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        System.out.println(message);
+      //  System.out.println(message);
         try {
             JSONObject obj = new JSONObject(message);
             TextView empName = (TextView) findViewById(R.id.text_name);
@@ -44,12 +49,27 @@ public class Profile extends ActionBarActivity {
             TextView empDesignation = (TextView) findViewById(R.id.text_designation);
             empDesignation.setText(empInfo.getString("emp_designation"));
 
-            Button home_phone = (Button) findViewById(R.id.home_phone);
+            TextView empDepartment = (TextView) findViewById(R.id.text_dept);
+            empDepartment.setText(empInfo.getString("emp_department"));
 
-            home_phone.setText("Home    " + empInfo.getString("home_phone"));
+            Button workPhone = (Button) findViewById(R.id.home_phone);
 
-            Button work_email = (Button) findViewById(R.id.work_email);
-            work_email.setText("Email   " + empInfo.getString("work_email"));
+            workPhone.setText("Home    " + empInfo.getString("home_phone"));
+
+            Button workEmail = (Button) findViewById(R.id.work_email);
+            workEmail.setText("Email   " + empInfo.getString("work_email"));
+
+            workPhone.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view){
+                    makeCall();
+                }
+            });
+
+            workEmail.setOnClickListener(new View.OnClickListener() {
+               public void onClick(View View){
+                   sendEmail();
+               }
+            });
 
         }catch(JSONException e){
             e.printStackTrace();
@@ -57,7 +77,40 @@ public class Profile extends ActionBarActivity {
 
     }
 
+    protected void makeCall(){
+        Log.i("Make call", "");
+        Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+        phoneIntent.setData(Uri.parse("tel:408-442-8559"));
 
+        try {
+            startActivity(phoneIntent);
+            finish();
+        }catch(ActivityNotFoundException ex){
+            Toast.makeText(Profile.this,
+            "Call faild, please try again later.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void sendEmail() {
+        Log.i("Send Email", "");
+        Intent emailIntent = new Intent();
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        String[] TO = {"gaurav.kesarwani2@gmail.com" };
+        String[] CC = {"gaurav2.forever@gmail.com"};
+
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your Subject");
+
+        try {
+            startActivity(emailIntent.createChooser(emailIntent, "Send Email..."));
+            finish();
+            Log.i("Finished Sending email...", "");
+        }catch(ActivityNotFoundException ex){
+            Toast.makeText(Profile.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -76,7 +129,6 @@ public class Profile extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

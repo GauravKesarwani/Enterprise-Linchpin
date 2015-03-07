@@ -5,7 +5,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.cmpe295b.Profile"
-    android:background="@drawable/bg">
+    android:background="@android:color/holo_blue_dark">
 
 
     <ImageView
@@ -23,9 +23,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_toRightOf="@+id/imageView"
+        android:typeface="monospace"
         android:text=""
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/home_phone" />
+        android:layout_alignEnd="@+id/home_phone"
+        android:layout_marginLeft="4dp"
+        style="@style/textColor" />
 
     <TextView
         android:id="@+id/text_designation"
@@ -34,7 +37,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_toRightOf="@+id/imageView"
         android:text=""
-        android:layout_below="@+id/text_name" />
+        android:layout_below="@+id/text_name"
+        android:layout_marginLeft="4dp"
+        style="@style/textColor" />
 
     <TextView
         android:id="@+id/text_dept"
@@ -43,8 +48,25 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_toRightOf="@+id/imageView"
         android:text=""
-        android:layout_below="@+id/text_designation" />
+        android:layout_marginLeft="4dp"
+        android:layout_below="@+id/text_designation"
+        style="@style/textColor"/>
 
+    <View
+        android:id="@+id/hor_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="1dp"
+        android:layout_below="@id/imageView"/>
+
+    <ImageButton
+        android:id="@+id/org_hier_icon"
+        android:layout_width="80dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/hor_divider"
+        android:src="@drawable/cate"
+    />
     <TextView
         android:id="@+id/label_contacts"
         android:layout_width="match_parent"
@@ -53,12 +75,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:background="#58ACFA"
         android:text="Contacts"
-        android:layout_below="@+id/imageView" />
+        android:layout_below="@+id/org_hier_icon"
+        style="@style/textColor" />
 
-    <CircleImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/phone_icon1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_call"
+        android:id="@+id/icon_call"
+        android:layout_below="@id/label_contacts"
+        android:layout_marginTop="25dp"
+        android:layout_toLeftOf="@+id/home_phone" />
 
     <Button
         android:id="@+id/home_phone"
@@ -68,7 +96,18 @@
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:onClick="getTextFiles"
-        android:text="@string/btn_home_phone" />
+        android:text="@string/btn_home_phone"
+        style="@style/textColor"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_email"
+        android:id="@+id/icon_email"
+        android:layout_below="@id/icon_call"
+        android:layout_marginTop="35dp"
+        android:layout_toLeftOf="@+id/work_email" />
 
     <Button
         android:id="@+id/work_email"
@@ -78,7 +117,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:onClick="getTextFiles"
-        android:text="@string/btn_work_email" />
+        android:text="@string/btn_work_email"
+        style="@style/textColor" />
 
     <Button
         android:id="@+id/add_contact_info"
@@ -88,18 +128,24 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
         android:onClick="getImageFiles"
-        android:text="@string/btn_add_info" />
+        android:text="@string/btn_add_info"
+        android:backgroundTint="@color/abc_primary_text_material_light"
+        android:clickable="true"
+        android:textColor="@android:color/background_light"
+        android:theme="@style/AppTheme" />
 
 
     <TextView
         android:id="@+id/label_other_details"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:background="#58ACFA"
-        android:text="Other Deatils..."
-        android:layout_below="@+id/add_contact_info" />
+        android:text="Other Details..."
+        android:theme="@style/AppTheme"
+        android:layout_below="@+id/add_contact_info"
+        android:textColor="@android:color/background_light" />
 
     <ListView
         android:id="@+id/list_view"
@@ -108,7 +154,10 @@
         android:layout_toEndOf="@+id/home_phone"
         android:layout_below="@+id/label_other_details"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:theme="@style/AppTheme"
+        android:touchscreenBlocksFocus="false"
+        android:background="@android:drawable/divider_horizontal_dim_dark">
     </ListView>
 
 </RelativeLayout>
