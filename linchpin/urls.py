@@ -1,8 +1,12 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from linchpin.views import EmployeeView
+from linchpin.views import EmployeeView, CompensationView, TeamInfoView, JobHistoryView, DirectoryView
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', EmployeeView.as_view(), name='Emp'),
+    url(r'^employee/$', EmployeeView.as_view(), name='Emp'),
+    url(r'^compensation/$', CompensationView.as_view(), name='Compensation'),
+    url(r'^teamInfo/$', TeamInfoView.as_view(), name='TeamInfo'),
+    url(r'^experience/$', JobHistoryView.as_view(), name='Experience'),
+    url(r'^directory/$', DirectoryView.as_view(), name='Directory')
 )

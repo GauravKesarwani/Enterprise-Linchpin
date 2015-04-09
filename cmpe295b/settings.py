@@ -58,15 +58,25 @@ WSGI_APPLICATION = 'cmpe295b.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+
+#Define the the database routers
+#DATABASE_ROUTERS = []
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cmpe295b',
         'USER': 'root',
-        'PASSWORD': 'root',
+      #  'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '3306',
-    }
+    },
+     # 'nosql295b':{
+     #     'ENGINE': 'django_mongodb_engine',
+     #     'NAME': 'linchpin',
+     #     'HOST': 'localhost',
+     #     'PORT': '27017',
+     # }
 }
 
 # Internationalization
@@ -87,3 +97,43 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        # Include the default Django email handler for errors
+        # This is what you'd get without configuring logging at all.
+        'mail_admins': {
+            'class': 'django.utils.log.AdminEmailHandler',
+            'level': 'ERROR',
+             # But the emails are plain text by default - HTML is nicer
+            'include_html': True,
+        },
+        # Log to a text file that can be rotated by logrotate
+        'logfile': {
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': '/Users/gaurav/GitRepo/cmpe295b/linchpin.log'
+        },
+    },
+    'loggers': {
+        # Again, default Django configuration to email unhandled exceptions
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        # Might as well log any errors anywhere else in Django
+        'django': {
+            'handlers': ['logfile'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        # Your own app - this assumes all your logger names start with "myapp."
+        'myapp': {
+            'handlers': ['logfile'],
+            'level': 'WARNING', # Or maybe INFO or DEBUG
+            'propagate': False
+        },
+    },
+}

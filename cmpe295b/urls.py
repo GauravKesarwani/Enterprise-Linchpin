@@ -4,6 +4,6 @@ from linchpin.views import EmployeeView
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^linchpin/$', include('linchpin.urls')),
+    url(r'^linchpin/', include('linchpin.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
