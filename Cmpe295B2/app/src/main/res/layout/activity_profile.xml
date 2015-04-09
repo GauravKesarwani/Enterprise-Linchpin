@@ -1,0 +1,169 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.cmpe295b.Profile">
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/profile"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignBottom="@+id/imageView"
+        android:background="#D8D8D8"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageView"
+        android:text=""
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/home_phone"
+        android:layout_marginLeft="4dp"
+        android:background="#D8D8D8"
+        style="@style/textColor" />
+
+    <TextView
+        android:id="@+id/text_designation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageView"
+        android:text=""
+        android:layout_below="@+id/text_name"
+        android:layout_marginLeft="4dp"
+        android:background="#D8D8D8"
+        style="@style/textColor" />
+
+    <TextView
+        android:id="@+id/text_dept"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageView"
+        android:text=""
+        android:layout_marginLeft="4dp"
+        android:layout_below="@+id/text_designation"
+        android:background="#D8D8D8"
+        style="@style/textColor"/>
+</LinearLayout>
+    <View
+        android:id="@+id/hor_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_below="@id/imageView"/>
+
+    <ImageButton
+        android:id="@+id/org_hier_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/hor_divider"
+        android:onClick="showDirectory"
+        android:src="@drawable/cate"
+    />
+    <TextView
+        android:id="@+id/label_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:background="@drawable/round"
+        android:gravity="center"
+        android:text="Contacts"
+        android:layout_below="@+id/org_hier_icon"
+        style="@style/textColor" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_call"
+        android:id="@+id/icon_call"
+        android:layout_below="@id/label_contacts"
+        android:layout_marginTop="1dp"
+        android:layout_toLeftOf="@+id/home_phone" />
+
+    <Button
+        android:id="@+id/home_phone"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_contacts"
+        android:layout_marginTop="1dp"
+        android:layout_centerHorizontal="true"
+        android:onClick="getTextFiles"
+        android:text="@string/btn_home_phone"
+        style="@style/textColor"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_email"
+        android:id="@+id/icon_email"
+        android:layout_below="@id/icon_call"
+        android:layout_marginTop="1dp"
+        android:layout_toLeftOf="@+id/work_email" />
+
+    <Button
+        android:id="@+id/work_email"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/home_phone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        android:onClick="getTextFiles"
+        android:text="@string/btn_work_email"
+        style="@style/textColor" />
+
+    <Button
+        android:id="@+id/add_contact_info"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/work_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        android:onClick="getImageFiles"
+        android:text="@string/btn_add_info"
+        android:backgroundTint="@color/abc_primary_text_material_light"
+        android:clickable="true"
+        android:textColor="#000"
+        android:theme="@style/AppTheme" />
+
+
+    <TextView
+        android:id="@+id/label_other_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:background="@drawable/round"
+        android:gravity="center"
+        android:layout_below="@+id/add_contact_info"
+        android:text="Other Details..."
+        android:textColor="#000" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/home_phone"
+        android:layout_below="@+id/label_other_details"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:theme="@style/AppTheme"
+        android:touchscreenBlocksFocus="false"
+        android:background="@android:drawable/divider_horizontal_dim_dark">
+    </ListView>
+
+</RelativeLayout>

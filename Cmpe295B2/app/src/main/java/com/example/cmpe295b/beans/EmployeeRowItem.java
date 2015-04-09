@@ -1,0 +1,41 @@
+package com.example.cmpe295b.beans;
+
+/**
+ * Created by gaurav on 3/29/15.
+ */
+public class EmployeeRowItem {
+    private String imageId;
+    private String empName;
+    private String empDesg;
+
+    public EmployeeRowItem(String imageId,String empName, String empDesg) {
+        this.imageId = imageId;
+        this.empName = empName;
+        this.empDesg = empDesg;
+    }
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public String getEmpDesg() {
+        return empDesg;
+    }
+
+    public void setEmpDesg(String empDesg) {
+        this.empDesg = empDesg;
+    }
+
+}

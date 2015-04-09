@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cmpe295B</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="btn_home_phone">Home</string>
+    <string name="btn_work_email">Work</string>
+    <string name="btn_add_info">Additional Contact Info...</string>
+    <string name="show_profile">Show Profile</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item >Home</item>
+        <item >Find People</item>
+        <item >Photos</item>
+        <item >Communities</item>
+        <item >Pages</item>
+        <item >What\'s Hot</item>
+    </string-array>
+
+    <string-array name="navigation_items">
+        <item>Experience</item>
+        <item>Job</item>
+        <item>Leave Request</item>
+        <item>Compensation</item>
+    </string-array>
+
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_compensation">Compensation</string>
+    <string name="title_activity_leave_request">LeaveRequest</string>
+    <string name="title_activity_team_info">TeamInfoActivity</string>
+    <string name="title_activity_experience">ExperienceActivity</string>
+    <string name="title_activity_performance">PerformanceActivity</string>
+    <string name="ipaddress">http://192.168.1.15:8000/linchpin/</string>
+    <string name="title_activity_directory">DirectoryActivity</string>
+    <!--string name="ipaddress">http://linode.foamsnet.com:8000/linchpin</string-->
+
+</resources>
