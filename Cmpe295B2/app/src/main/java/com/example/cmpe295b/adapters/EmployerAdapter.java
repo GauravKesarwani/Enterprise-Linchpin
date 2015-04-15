@@ -29,9 +29,7 @@ public class EmployerAdapter extends ArrayAdapter<EmployerRowItem>{
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View listItem = null;
-
         LayoutInflater inflater = ((Activity)context).getLayoutInflater();
         listItem = inflater.inflate(R.layout.employer_item_row, parent, false);
 
@@ -45,10 +43,9 @@ public class EmployerAdapter extends ArrayAdapter<EmployerRowItem>{
         int empNo = position + 1;
         employerNo.setText("Employer " + empNo);
         employerName.setText(rowItem.getEmployerName());
-        empStartDate.setText(rowItem.getStartDate());
+        empStartDate.setText(rowItem.getStartDate() + " - ");
         empEndDate.setText(rowItem.getEndDate());
         empDesg.setText(rowItem.getDesignation());
-        //empimageView.setImageResource(rowItem.getImageId());
         return listItem;
     }
 }

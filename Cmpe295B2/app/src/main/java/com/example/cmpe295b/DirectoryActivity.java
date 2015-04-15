@@ -1,112 +1,152 @@
 package com.example.cmpe295b;
 
-import com.example.cmpe295b.beans.EmployeeRowItem;
-import com.example.cmpe295b.utils.HorizontalListView;
-import com.example.cmpe295b.utils.ImageLoader;
-
-import android.app.AlertDialog;
+import com.example.cmpe295b.fragments.HorizontalScroll;
+import com.example.cmpe295b.fragments.ShowManager;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.AbsoluteLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
-public class DirectoryActivity extends ActionBarActivity {
 
-    private static String[] dataObjects;
-    private EmployeeRowItem[] rowItems;
-    private String fbImageUrl = "https://graph.facebook.com/";
+public class DirectoryActivity extends ActionBarActivity implements HorizontalScroll.OnImageSelectedListener{
+
+    String message;
+    ShowManager showManagerFrag;
+    private static String urlString = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("Inside Directory Activity On create activity");
-        setContentView(R.layout.listviewdemo);
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(Profile.DIRECTORY_MESSAGE);
-        System.out.println("Message in Directory Activity " + message);
+        setContentView(R.layout.activity_directory);
+        if( savedInstanceState != null)
+            return;
+        FragmentManager fm = getFragmentManager();
+        HorizontalScroll horizontalScroll = new HorizontalScroll();
+        System.out.println("Directory Intent Extras" + getIntent().getExtras());
+        Bundle args = new Bundle();
+        message = getIntent().getStringExtra(Profile.DIRECTORY_MESSAGE);
+        args.putString(HorizontalScroll.MESSAGE, message);
+        horizontalScroll.setArguments(args);
 
-        try {
-            JSONObject obj = new JSONObject(message);
-            JSONArray directory = obj.getJSONArray("directory");
-            System.out.println(directory.length());
-            dataObjects = new String[directory.length()];
-            rowItems = new EmployeeRowItem[directory.length()];
-            for (int i=0;i < directory.length();i++){
-                EmployeeRowItem rowItem = new EmployeeRowItem(fbImageUrl+ directory.getJSONObject(i).getString("fbusername") + "/picture?width=400", directory.getJSONObject(i).getString("fname"),null);
-                rowItems[i] = rowItem;
-               // rowItems[i].setEmpName(directory.getJSONObject(i).getString("fname"));
-                System.out.println(dataObjects[i]);
-              //  rowItems[i].setImageId(fbImageUrl+ directory.getJSONObject(i).getString("fbusername") + "/picture?width=400");
-            }
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.horscroll, horizontalScroll);
+        ft.commit();
 
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
-
-        HorizontalListView listview = (HorizontalListView) findViewById(R.id.listview);
-        listview.setAdapter(mAdapter);
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_directory, menu);
 
-    private BaseAdapter mAdapter = new BaseAdapter() {
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(new ComponentName(getApplicationContext(), SearchDirectoryActivity.class)));
+        return true;
+    }
 
-        private OnClickListener mOnButtonClicked = new OnClickListener() {
+    @Override
+    public void onImageSelectedListener(int position){
+        System.out.println("Inside Directory Activity OnImageSelected Listener Position " + position);
+        System.out.println("Message in Directory Image SElected listener " + message);
+        try {
+            //convert String into JSON array
+            JSONObject obj = new JSONObject(message);
+            JSONArray arr = obj.getJSONArray("directory");
+            JSONObject selObj = arr.getJSONObject(position);
+            System.out.println(selObj.getString("manager"));
+            String linchpinip =  getString(R.string.ipaddress);
+            urlString = linchpinip + "employee/?emp_id=" + selObj.getString("emp_id");
+            new CallAPI().execute(urlString);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DirectoryActivity.this);
-                builder.setMessage("hello from " + v);
-                builder.setPositiveButton("Cool", null);
-                builder.show();
+    private class CallAPI extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params){
 
+            String fullApi_url = params[0];
+            HttpClient httpClientObject = new DefaultHttpClient();
+            System.out.println(fullApi_url);
+            HttpGet httpGetCall = new HttpGet(fullApi_url);
+
+            String jsonResult = null;
+            try {
+
+                HttpEntity httpEntityObject = httpClientObject.execute(httpGetCall).getEntity();
+                System.out.println(httpEntityObject);
+                if (httpEntityObject != null) {
+
+                    InputStream inputStreamObject = httpEntityObject.getContent();
+                    Reader readerObject = new InputStreamReader(inputStreamObject);
+                    BufferedReader bufferedReaderObject = new BufferedReader(readerObject);
+
+                    StringBuilder jsonResultStringBuilder = new StringBuilder();
+                    String readLine = null;
+
+                    while ((readLine = bufferedReaderObject.readLine()) != null) {
+                        jsonResultStringBuilder.append(readLine + "\n");
+                    }
+
+                    jsonResult = jsonResultStringBuilder.toString();
+                }
+
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        };
 
-        @Override
-        public int getCount() {
-            return dataObjects.length;
+            return jsonResult;
         }
 
-        @Override
-        public Object getItem(int position) {
-            return null;
+        protected void onPostExecute(String result) {
+           FragmentManager fm = getFragmentManager();
+           showManagerFrag = new ShowManager();
+           Bundle args = new Bundle();
+           System.out.println("Manager Info " + result);
+           args.putString(ShowManager.Message, result);
+           showManagerFrag.setArguments(args);
+           FragmentTransaction ft = fm.beginTransaction();
+           ft.replace(R.id.showManager,showManagerFrag);
+           ft.commit();
         }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View retval = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewitem, null);
-            TextView title = (TextView) retval.findViewById(R.id.title);
-            title.setText(rowItems[position].getEmpName());
-            ImageView empImageView = (ImageView) retval.findViewById(R.id.image);
-            Context c = parent.getContext();
-            ImageLoader imgLoader = new ImageLoader(c);
-            imgLoader.DisplayImage(rowItems[position].getImageId(),empImageView);
-            empImageView.setOnClickListener(mOnButtonClicked);
-            return retval;
-        }
-
-    };
-
-
+    }
 }
 
 

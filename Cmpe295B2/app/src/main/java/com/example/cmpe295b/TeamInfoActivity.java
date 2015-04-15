@@ -7,10 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.example.cmpe295b.adapters.TeamInfoAdapter;
 import com.example.cmpe295b.beans.EmployeeRowItem;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,10 +21,8 @@ public class TeamInfoActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_info);
-
         Intent intent = getIntent();
         String message = intent.getStringExtra(Profile.TEAMINFO_MESSAGE);
-        System.out.println("Message in Team Info Activity " + message);
         try {
             JSONObject obj = new JSONObject(message);
             JSONArray arr = obj.getJSONArray("teamInfo");
@@ -34,20 +30,14 @@ public class TeamInfoActivity extends ActionBarActivity {
             String[] teamMembers = new String[teamSize];
             TextView teamSizeL = (TextView) findViewById(R.id.label_teamSize);
             teamSizeL.setText("Team Size ");
-
             TextView teamSizeCount = (TextView) findViewById(R.id.teamSizeCount);
             teamSizeCount.setText(""+teamSize);
             rowItems = new EmployeeRowItem[teamSize];
-            System.out.println(arr);
             for (int i = 0; i < teamSize; i++) {
                 JSONObject o = arr.getJSONObject(i);
-                System.out.println(o.getString("fname"));
-                System.out.println(o.getString("fbusername"));
-                System.out.println(fbImageUrl + o.getString("fbusername") + "/picture");
-                EmployeeRowItem item = new EmployeeRowItem(fbImageUrl + o.getString("fbusername") + "/picture?width=400",o.getString("fname"),o.getString("emp_designation"));
+                EmployeeRowItem item = new EmployeeRowItem(fbImageUrl + o.getString("fbusername") + "/picture?width=400",o.getString("fname"),o.getString("emp_designation"),null);
                 rowItems[i] = item;
             }
-
             listView = (ListView) findViewById(R.id.list_team);
             TeamInfoAdapter adapter = new TeamInfoAdapter(this, rowItems);
             listView.setAdapter(adapter);

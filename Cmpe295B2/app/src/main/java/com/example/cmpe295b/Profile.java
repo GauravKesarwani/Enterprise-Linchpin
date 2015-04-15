@@ -25,7 +25,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,13 +69,11 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
         Intent intent = getIntent();
 
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        System.out.println(message);
         try {
             JSONObject obj = new JSONObject(message);
             TextView empName = (TextView) findViewById(R.id.text_name);
             JSONArray arr = obj.getJSONArray("emp_info"); //array of Json Object
             JSONObject empInfo = (JSONObject) arr.get(0); //get the first json object
-            System.out.println(empInfo);
             empName.setText(empInfo.get("fname") + " " + empInfo.get("lname"));
 
             TextView empDesignation = (TextView) findViewById(R.id.text_designation);
@@ -113,35 +110,20 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                System.out.println("On item click listener called");
-                System.out.println("Position " + position);
-
                 if (position == 0) {
                     new CallTeamInfoAPI().execute(teamInfoUrl);
-                 //   new CallTeamImageAPI().execute(fbImageUrl);
-                    System.out.println("Position  " + position);
-                    System.out.println("Id  " + id);
                 }
                 else if (position == 1){
                     new CallExperienceAPI().execute(experienceUrl);
-                    System.out.println("Position  " + position);
-                    System.out.println("Id  " + id);
                 }
-
                 else if (position == 2){
                     new CallCompensationAPI().execute(compensationUrl);
-                    System.out.println("Position  " + position);
-                    System.out.println("Id  " + id);
                 }
-
                 else if (position == 3){
                     new CallPerformanceAPI().execute(performanceUrl);
-                    System.out.println("Position  " + position);
-                    System.out.println("Id  " + id);
                 }
             }
         });
-
     }
 
     protected void makeCall(){
@@ -161,18 +143,19 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
 
     protected void sendEmail() {
         Log.i("Send Email", "");
-        Intent emailIntent = new Intent();
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setData(Uri.parse("mailto:"));
         emailIntent.setType("text/plain");
-        String[] TO = {"gaurav.kesarwani2@gmail.com" };
-        String[] CC = {"gaurav2.forever@gmail.com"};
+        String[] TO = {"email_to_send@gmail.com" };
+        String[] CC = {"cc_to@gmail.com"};
 
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
         emailIntent.putExtra(Intent.EXTRA_CC, CC);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your Subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
 
         try {
-            startActivity(emailIntent.createChooser(emailIntent, "Send Email..."));
+            startActivity(Intent.createChooser(emailIntent, "Send Email..."));
             finish();
         //    Log.i("Finished Sending email...", "");
         }catch(ActivityNotFoundException ex){
@@ -286,86 +269,6 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
 
         }
     }
-
-//    private class CallTeamImageAPI extends AsyncTask<String, Void, Void> {
-//        @Override
-//        protected Void doInBackground(String...param) {
-//            String fullApi_url = param[0];
-//            try {
-//                HttpClient httpClientObject = new DefaultHttpClient();
-//                HttpGet httpGetCall = new HttpGet("https://graph.facebook.com/gaurav.kesarwani85/picture");
-//                HttpResponse rp = httpClientObject.execute(httpGetCall);
-//
-//                if (rp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-//                    String queryAlbums = EntityUtils.toString(rp.getEntity());
-//                    System.out.println(queryAlbums);
-//                    JSONObject JOTemp = new JSONObject(queryAlbums);
-//
-//                    JSONArray JAPhotos = JOTemp.getJSONArray("data");
-//
-//                    getPhotos photos;
-//
-//                    for (int i = 0; i < JAPhotos.length(); i++) {
-//                        JSONObject JOPhotos = JAPhotos.getJSONObject(i);
-//                         Log.e("INDIVIDUAL ALBUMS", JOPhotos.toString());
-//
-//                        if (JOPhotos.has("link")) {
-//
-//                            photos = new getPhotos();
-//
-//                            // GET THE ALBUM ID
-//                            if (JOPhotos.has("id")) {
-//                                photos.setPhotoID(JOPhotos.getString("id"));
-//                            } else {
-//                                photos.setPhotoID(null);
-//                            }
-//
-//                            // GET THE ALBUM NAME
-//                            if (JOPhotos.has("name")) {
-//                                photos.setPhotoName(JOPhotos.getString("name"));
-//                            } else {
-//                                photos.setPhotoName(null);
-//                            }
-//
-//                            // GET THE ALBUM COVER PHOTO
-//                            if (JOPhotos.has("picture")) {
-//                                photos.setPhotoPicture(JOPhotos
-//                                        .getString("picture"));
-//                            } else {
-//                                photos.setPhotoPicture(null);
-//                            }
-//
-//                            // GET THE PHOTO'S SOURCE
-//                            if (JOPhotos.has("source")) {
-//                                photos.setPhotoSource(JOPhotos
-//                                        .getString("source"));
-//                            } else {
-//                                photos.setPhotoSource(null);
-//                            }
-//
-//                          //  arrPhotos.add(photos);
-//                        }
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//            return null;
-//        }
-//
-//        protected void onPostExecute(String result) {
-//            System.out.println(" Result from api call in profile class" + result);
-//            Intent intent = new Intent(getApplicationContext(), ExperienceActivity.class);
-//
-//            intent.putExtra(EXPERIENCE_MESSAGE, result);
-//
-//            startActivity(intent);
-//            //System.out.println(result);
-//
-//        }
-//    }
-//
 
             ////1. Team Experience API ////
     private class CallExperienceAPI extends AsyncTask<String, String, String> {
@@ -568,7 +471,6 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
             Intent intent = new Intent(getApplicationContext(), DirectoryActivity.class);
             System.out.println(result);
             intent.putExtra(DIRECTORY_MESSAGE, result);
-
             startActivity(intent);
         }
     }

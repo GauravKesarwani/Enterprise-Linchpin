@@ -7,11 +7,13 @@ public class EmployeeRowItem {
     private String imageId;
     private String empName;
     private String empDesg;
+    private String empDept;
 
-    public EmployeeRowItem(String imageId,String empName, String empDesg) {
+    public EmployeeRowItem(String imageId,String empName, String empDesg, String empDept) {
         this.imageId = imageId;
         this.empName = empName;
         this.empDesg = empDesg;
+        this.empDept = empDept;
     }
 
     public String getImageId() {
@@ -36,6 +38,14 @@ public class EmployeeRowItem {
 
     public void setEmpDesg(String empDesg) {
         this.empDesg = empDesg;
+    }
+
+    public String getEmpDept() {
+        return empDept;
+    }
+
+    public void setEmpDept(String empDept) {
+        this.empDept = empDept;
     }
 
 }

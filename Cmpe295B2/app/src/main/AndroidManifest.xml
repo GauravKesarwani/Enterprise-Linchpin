@@ -47,6 +47,18 @@
         <activity
             android:name=".DirectoryActivity"
             android:label="@string/title_activity_directory" >
+
+        </activity>
+        <activity
+            android:name=".SearchDirectoryActivity"
+            android:label="@string/title_activity_search_directory" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"
+                android:value=".activities.SearchDirectoryActivity"/>
         </activity>
     </application>
 

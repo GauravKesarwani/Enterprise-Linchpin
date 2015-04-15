@@ -28,16 +28,13 @@ public class TeamInfoAdapter extends ArrayAdapter<EmployeeRowItem> {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View listItem = null;
-
         LayoutInflater inflater = ((Activity)context).getLayoutInflater();
         listItem = inflater.inflate(R.layout.teamlist_item, parent, false);
 
         ImageView empimageView = (ImageView) listItem.findViewById(R.id.EmpImage);
         TextView empName = (TextView) listItem.findViewById(R.id.EmpName);
         TextView empDesg = (TextView) listItem.findViewById(R.id.EmpDesg);
-
         EmployeeRowItem rowItem = (EmployeeRowItem) getItem(position);
 
         empName.setText(rowItem.getEmpName());

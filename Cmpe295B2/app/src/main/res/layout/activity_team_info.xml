@@ -73,8 +73,6 @@
         android:layout_alignLeft="@+id/teamSize"
         android:layout_alignStart="@+id/teamSize" />
 
-
-
     <TextView
         android:id="@+id/label_teamMembers"
         android:layout_width="fill_parent"

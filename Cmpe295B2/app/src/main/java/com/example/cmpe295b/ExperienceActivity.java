@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.cmpe295b.adapters.EmployerAdapter;
 import com.example.cmpe295b.beans.EmployerRowItem;
@@ -13,56 +14,64 @@ import com.example.cmpe295b.beans.EmployerRowItem;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 
 public class ExperienceActivity extends ActionBarActivity {
     ListView listView;
     EmployerRowItem[] rowItems;
+    int totalExpInMonths = 0;
+    double totalExpInYears = 0;
+    JSONArray empJoining;
+    JSONObject obj,obj1;
+    String joiningDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_experience);
         Intent intent = getIntent();
         String message = intent.getStringExtra(Profile.EXPERIENCE_MESSAGE);
-        System.out.println("Message in Experience " + message);
-
-
         try {
-            JSONObject obj = new JSONObject(message);
+            obj = new JSONObject(message);
             JSONArray arr = obj.getJSONArray("jobhist");
+            empJoining = obj.getJSONArray("empJoining");
+            obj1 = empJoining.getJSONObject(0);
+            joiningDate = obj1.getString("joiningDate");
             rowItems = new EmployerRowItem[arr.length()];
-            System.out.println(" arrlength " + arr.length());
 
-            //  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-            //  Date d1 = null;
-            //  Date d2 = null;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            Date d1 = null;
+            Date d2 = null;
+            Calendar cal = Calendar.getInstance();
+            Calendar startCalendar = new GregorianCalendar();
+            Calendar endCalendar = new GregorianCalendar();
+
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject jobHist = arr.getJSONObject(0);
-            //    d1 = dateFormat.parse(jobHist.getString("startDate"));
-                System.out.println(jobHist);
+                d1 = dateFormat.parse(jobHist.getString("startDate"));
+                d2 = dateFormat.parse(jobHist.getString("endDate"));
+                startCalendar.setTime(d1);
+                endCalendar.setTime(d2);
+
+                int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+                int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+                totalExpInMonths+=diffMonth;
 
                 EmployerRowItem erow = new EmployerRowItem(jobHist.getString("companyName"), jobHist.getString("designation"), jobHist.getString("startDate"),jobHist.getString("endDate"));
-            //    EmployerRowItem erow = new EmployerRowItem(jobHist.getString("designation"));
-            //    EmployerRowItem erow = new EmployerRowItem(jobHist.getString("designation"));
                 rowItems[i] = erow;
-
-
-            // rowItems[i].setStartDate(getString("startDate"));
-            // rowItems[i].setEndDate(getString("endDate"));
-            // rowItems[i].setDesignation(getString("designation"));
-
-            //    String endDate = jobHist.getString("endDate");
-
-             //   TextView totalExp = (TextView) findViewById(R.id.totalExp);
-             //   TextView totalExp = (TextView) findViewById(R.id.totalExp);
-             //   totalExp.setText();
-             //   TextView compFreq = (TextView) findViewById(R.id.textView22);
-              //  compFreq.setText(compensationInfo.getString("frequency"));
             }
 
-
+            if (totalExpInMonths > 12) {
+                totalExpInYears+=totalExpInMonths/12;
+            }
         }catch(JSONException e) {
+            e.printStackTrace();
+        }
+        catch(ParseException e){
             e.printStackTrace();
         }
 
@@ -70,6 +79,14 @@ public class ExperienceActivity extends ActionBarActivity {
         EmployerAdapter adapter = new EmployerAdapter(this, rowItems);
         listView.setAdapter(adapter);
 
+        TextView v = (TextView) findViewById(R.id.totalExp);
+        if (totalExpInYears > 0)
+            v.setText("Total Experience " + totalExpInYears + " years");
+        else
+            v.setText("Total Experience " + totalExpInMonths + " months");
+
+        TextView joiningDateView = (TextView) findViewById(R.id.joiningDateLabel);
+        joiningDateView.setText("Start Date    " + joiningDate);
     }
 
 
@@ -77,7 +94,6 @@ public class ExperienceActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_experience, menu);
-
         return true;
     }
 
@@ -92,7 +108,6 @@ public class ExperienceActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
