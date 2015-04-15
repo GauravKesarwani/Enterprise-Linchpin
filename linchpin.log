@@ -878,3 +878,45 @@ Traceback (most recent call last):
   File "/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 184, in default
     raise TypeError(repr(o) + " is not JSON serializable")
 TypeError: <Employee: Employee object> is not JSON serializable
+Internal Server Error: /linchpin/employee/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/usr/local/lib/python2.7/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/usr/local/lib/python2.7/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/usr/local/lib/python2.7/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/lib/python2.7/importlib/__init__.py", line 37, in import_module
+    __import__(name)
+  File "/Users/gaurav/GitRepo/cmpe295b/cmpe295b/urls.py", line 7, in <module>
+    url(r'^linchpin/', include('linchpin.urls')),
+  File "/usr/local/lib/python2.7/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/lib/python2.7/importlib/__init__.py", line 37, in import_module
+    __import__(name)
+  File "/Users/gaurav/GitRepo/cmpe295b/linchpin/urls.py", line 12, in <module>
+    url(r'^adsearch/$', AdvancedSearchDirectoryView.as_view(), name='SearchDirectory')
+NameError: name 'AdvancedSearchDirectoryView' is not defined
+Internal Server Error: /linchpin/directory/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/usr/local/lib/python2.7/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/usr/local/lib/python2.7/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/usr/local/lib/python2.7/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/lib/python2.7/importlib/__init__.py", line 37, in import_module
+    __import__(name)
+  File "/Users/gaurav/GitRepo/cmpe295b/cmpe295b/urls.py", line 7, in <module>
+    url(r'^linchpin/', include('linchpin.urls')),
+  File "/usr/local/lib/python2.7/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/lib/python2.7/importlib/__init__.py", line 37, in import_module
+    __import__(name)
+  File "/Users/gaurav/GitRepo/cmpe295b/linchpin/urls.py", line 12, in <module>
+    url(r'^adsearch/$', AdvancedSearchDirectoryView.as_view(), name='SearchDirectory')
+NameError: name 'AdvancedSearchDirectoryView' is not defined

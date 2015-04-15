@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from linchpin.models import Compensation, JobHistory
+from itertools import chain
 
 # Create your views here.
 
@@ -15,7 +16,7 @@ class EmployeeView(APIView):
         print emp
         try:
             result = {}
-            result['emp_info'] = Employee.objects.filter(id=emp).values('fname','lname','emp_designation','emp_department','home_phone','work_email')
+            result['emp_info'] = Employee.objects.filter(id=emp).values('emp_id','fname','lname','emp_designation','emp_department','home_phone','work_email','fbusername','grade')
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -59,6 +60,7 @@ class JobHistoryView(APIView):
         try:
             result = {}
             emp = request.GET['emp_id']
+            result['empJoining'] = Employee.objects.filter(emp_id=emp).values('joiningDate')
             result['jobhist'] = JobHistory.objects.filter(emp_id=emp).values('emp_id','serialId','companyName','startDate','endDate','designation')
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -77,13 +79,28 @@ class DirectoryView(APIView):
             emp = request.GET['emp_id']
             grade = Employee.objects.filter(id=emp).values('grade')[0]['grade']
             department = Employee.objects.filter(id=emp).values('emp_department')[0]['emp_department']
-            result['directory'] = Employee.objects.filter(grade=grade, emp_department=department).values('fname','lname','fbusername')
+            result['directory'] = Employee.objects.filter(grade=grade, emp_department=department).values('emp_id','fname','lname','fbusername','manager','emp_department')
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             print result
             return Response(result,status=status.HTTP_200_OK)
 
+class AdvancedSearchDirectoryView(APIView):
+    """
+    Search Employee in Directory"
+    """
+    def get(self,request,format=None):
+        try:
+            result = {}
+            dept = request.GET['department']
+            band = request.GET['band']
+            result['adsearch'] = Employee.objects.filter(grade=band, emp_department=dept).values('fname','lname','fbusername','manager','emp_department')
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            print result
+            return Response(result,status=status.HTTP_200_OK)
 
 
 
