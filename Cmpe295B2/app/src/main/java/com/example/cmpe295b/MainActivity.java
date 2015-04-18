@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
+import android.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -26,7 +30,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 
 public class MainActivity extends ActionBarActivity {
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -52,7 +55,17 @@ public class MainActivity extends ActionBarActivity {
         String linchpinip =  getString(R.string.ipaddress);
         profileUrl = linchpinip + "employee/?emp_id=1";
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setIcon(R.drawable.linchpin);
+        getSupportActionBar().setIcon(R.drawable.linchpin);
+
        }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -65,7 +78,6 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -105,6 +117,7 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(String result) {
             Intent intent = new Intent(getApplicationContext(), Profile.class);
             intent.putExtra(EXTRA_MESSAGE, result);
+            Log.d("Result in Main Activity", result);
             startActivity(intent);
         }
     }

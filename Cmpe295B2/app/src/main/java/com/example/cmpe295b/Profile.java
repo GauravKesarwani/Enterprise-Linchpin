@@ -2,6 +2,7 @@ package com.example.cmpe295b;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -12,11 +13,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
 import android.view.GestureDetector;
+
+import com.example.cmpe295b.utils.ImageLoader;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -30,15 +35,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class Profile extends ActionBarActivity implements GestureDetector.OnGestureListener {
     private String[] myNavigationItemTitles;
     private static String compensationUrl;
     private static String teamInfoUrl;
-    private String fbImageUrl = "https://graph.facebook.com/";
+    private String fbImageUrl = "https://s3-us-west-1.amazonaws.com/cmpe295b/Profile/";
+    private String linkedInUri = "";
+    private String twitterUri = "";
+    private String fbUri = "";
     private static String experienceUrl;
     private static String performanceUrl;
     private static String directoryUrl;
+    ImageLoader imgLoader;
     public final static String COMP_MESSAGE = "com.example.compM";
     public final static String TEAMINFO_MESSAGE = "com.example.teaminfoM";
     public final static String EXPERIENCE_MESSAGE = "com.example.experienceM";
@@ -52,20 +63,21 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
         String appUrl = getString(R.string.ipaddress);
         compensationUrl = appUrl +  "compensation/?emp_id=1";
         teamInfoUrl = appUrl + "teamInfo/?emp_id=1";
-        fbImageUrl = "https://graph.facebook.com/";
         experienceUrl =  appUrl + "experience/?emp_id=1";
         performanceUrl = appUrl + "performance/?emp_id=1";
         directoryUrl = appUrl + "directory/?emp_id=1";
+
         setContentView(R.layout.activity_profile);
+        imgLoader = new ImageLoader(this);
         NavigationItem[ ] navigationItems = new NavigationItem[4];
-        ListView mItemList = (ListView) findViewById(R.id.list_view);
+      //  ListView mItemList = (ListView) findViewById(R.id.list_view);
         navigationItems[0] = new NavigationItem("Team Info");
         navigationItems[1] = new NavigationItem("Experience & Job History");
         navigationItems[2] = new NavigationItem("Compensation");
         navigationItems[3] = new NavigationItem("Talent & Performance");
 
         CustomAdapter adapter = new CustomAdapter(this, R.layout.listview_item_row, navigationItems);
-        mItemList.setAdapter(adapter);
+     //   mItemList.setAdapter(adapter);
         Intent intent = getIntent();
 
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
@@ -82,7 +94,20 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
             TextView empDepartment = (TextView) findViewById(R.id.text_dept);
             empDepartment.setText(empInfo.getString("emp_department"));
 
+            //Assign Profile Pic
+            ImageView empPic = (ImageView) findViewById(R.id.profilePic);
+            String url = fbImageUrl + (String) empInfo.get("fbusername") + ".jpg";
+            imgLoader.DisplayImage(url,empPic);
             Button workPhone = (Button) findViewById(R.id.home_phone);
+
+            //Assign LinkedIn Uri from db
+            linkedInUri = "https://www.linkedin.com/" + empInfo.get("linkedinurl");
+
+            //Assign FaceBook Uri from db
+            fbUri = "https://www.facebook.com/" + empInfo.get("fbusername");
+
+            //Assign Twitter Uri from db
+            twitterUri = "https://www.twitter.com/" + empInfo.get("fbusername");
 
             workPhone.setText("Home    " + empInfo.getString("home_phone"));
 
@@ -105,7 +130,7 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
             e.printStackTrace();
         }
 
-        mItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      /*  mItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -123,7 +148,7 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
                     new CallPerformanceAPI().execute(performanceUrl);
                 }
             }
-        });
+        }); */
     }
 
     protected void makeCall(){
@@ -214,6 +239,7 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return false;
     }
+
 
     /////End Gestures///
 
@@ -475,7 +501,6 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
         }
     }
 
-
     public class getPhotos {
 
         String PhotoID;
@@ -527,6 +552,27 @@ public class Profile extends ActionBarActivity implements GestureDetector.OnGest
     public void showDirectory(View v){
         System.out.println("Directory Activity Invoked");
         new CallDirectoryAPI().execute(directoryUrl);
+    }
+
+    public void openLinkedInProfile(View v){
+        Log.d("LinkedIn Uri", linkedInUri);
+        Uri uri = Uri.parse(linkedInUri);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    public void openFacebookProfile(View v){
+        Log.d("Facebook Uri", fbUri);
+        Uri uri = Uri.parse(fbUri);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    public void openTwitterProfile(View v){
+        Log.d("Twitter Uri", twitterUri);
+        Uri uri = Uri.parse(twitterUri);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }
 

@@ -46,6 +46,10 @@ public class DirectoryActivity extends ActionBarActivity implements HorizontalSc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directory);
+
+        setTitle("Directory");
+
+        getSupportActionBar().setIcon(R.drawable.linchpin);
         if( savedInstanceState != null)
             return;
         FragmentManager fm = getFragmentManager();
@@ -75,7 +79,7 @@ public class DirectoryActivity extends ActionBarActivity implements HorizontalSc
                 (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(new ComponentName(getApplicationContext(), SearchDirectoryActivity.class)));
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

@@ -23,13 +23,15 @@ android:background="#fff"
     android:id="@+id/empID"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="2dp"
+    android:layout_marginLeft="10dp"
+    android:textStyle="bold"
     android:layout_toRightOf="@+id/managerImg"/>
 <TextView
     android:id="@+id/name"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="2dp"
+    android:layout_marginLeft="10dp"
+    android:textStyle="bold"
     android:layout_below="@+id/empID"
     android:layout_toRightOf="@+id/managerImg"/>
 
@@ -37,6 +39,8 @@ android:background="#fff"
     android:id="@+id/empDesg"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:textStyle="bold"
     android:layout_toRightOf="@+id/managerImg"
     android:layout_below="@+id/name"/>
 
@@ -44,6 +48,8 @@ android:background="#fff"
     android:id="@+id/empBand"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:textStyle="bold"
     android:layout_toRightOf="@+id/managerImg"
     android:layout_below="@+id/empDesg"/>
 

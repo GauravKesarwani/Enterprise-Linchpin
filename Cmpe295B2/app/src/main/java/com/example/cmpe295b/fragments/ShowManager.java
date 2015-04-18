@@ -78,10 +78,10 @@ public class ShowManager extends Fragment {
             TextView name = (TextView) view.findViewById(R.id.name);
             TextView empDesg = (TextView) view.findViewById(R.id.empDesg);
             TextView empBand = (TextView) view.findViewById(R.id.empBand);
-        //    empID.setText(arr.getJSONObject(0).getString(arr.getJSONObject(0).getString("emp_id")));
+            empID.setText("ID: " + arr.getJSONObject(0).getString(("emp_id")));
             empDesg.setText(arr.getJSONObject(0).getString("emp_designation"));
             name.setText(arr.getJSONObject(0).getString("fname") + " " + arr.getJSONObject(0).getString("lname"));
-            empBand.setText(arr.getJSONObject(0).getString("grade"));
+            empBand.setText("Band: " + arr.getJSONObject(0).getString("grade"));
 
         }catch (JSONException e){
             e.printStackTrace();
